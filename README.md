@@ -22,7 +22,7 @@ Version 1 intentionally has no database, CMS, login, API or server-side renderin
 Requirements: Node `>=22.12.0`.
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -113,14 +113,6 @@ See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 The deployment uploads the completed `dist/` build to a staged release directory before modifying the live document root, snapshots the previous live release, and attempts rollback if activation fails.
 
-## Lockfile before production
+## Dependency reproducibility
 
-The initial implementation environment could not reach the npm registry. On an internet-connected machine, run:
-
-```bash
-npm install
-npm test
-npm run build
-```
-
-Commit the resulting `package-lock.json`. Then replace `npm install --no-audit --no-fund` with `npm ci` in both GitHub Actions workflows, as documented in `docs/DEPLOYMENT.md`.
+`package-lock.json` is committed and both CI and production deployment use `npm ci` with the npm cache enabled in `actions/setup-node`.
