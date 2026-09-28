@@ -59,14 +59,6 @@ Do not use Cloudflare Pages or Workers for version 1 of this site.
 
 The deployment script keeps the previous live snapshot at the configured releases path as `previous`. If a successful deploy later needs to be rolled back manually, copy that snapshot back into the live document root with remote `rsync -a --delete` after confirming the target paths.
 
-## Lockfile note
+## Dependency installs
 
-The initial project was authored in an environment that could not reach the npm registry, so the lockfile must be generated on an internet-connected development machine before the repository is considered production-ready:
-
-```bash
-npm install
-npm test
-npm run build
-```
-
-Commit the generated `package-lock.json`, then change both workflows from `npm install --no-audit --no-fund` to `npm ci` and optionally enable the npm cache in `actions/setup-node`.
+`package-lock.json` is committed. CI and production deployment use `npm ci`, and `actions/setup-node` caches npm downloads. Dependency changes must update and commit the lockfile.
