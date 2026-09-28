@@ -1,0 +1,24 @@
+---
+import type { GetStaticPaths } from 'astro';
+import UpdateLayout from '../layouts/UpdateLayout.astro';
+import { getPublishedUpdates } from '../lib/updates';
+import { getTemplateComponent } from '../lib/templates';
+
+export const getStaticPaths = (async () => {
+  const updates = await getPublishedUpdates();
+  return updates.map((update) => {
+    getTemplateComponent(update.data.template);
+    return {
+      params: { slug: update.data.slug },
+      props: { update },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { update } = Astro.props;
+const templateLoader = getTemplateComponent(update.data.template);
+const Landing = await templateLoader();
+---
+<UpdateLayout update={update}>
+  <Landing update={update} />
+</UpdateLayout>

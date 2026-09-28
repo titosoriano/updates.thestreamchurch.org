@@ -1,0 +1,35 @@
+---
+interface Props {
+  update: {
+    data: {
+      title: string;
+      slug: string;
+      description: string;
+      category: string;
+      publishDate: Date;
+      image: string;
+      imageAlt: string;
+      eventDate?: Date;
+    };
+  };
+  now?: Date;
+}
+const { update, now = new Date() } = Astro.props;
+const { data } = update;
+const formattedDate = new Intl.DateTimeFormat('es-US', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/New_York'
+}).format(data.publishDate);
+const upcoming = data.eventDate ? data.eventDate.getTime() >= now.getTime() : false;
+---
+<article class="update-card">
+  <a class="update-card-media" href={`/${data.slug}`} aria-label={`Leer ${data.title}`}>
+    <img src={data.image} alt={data.imageAlt} loading="lazy" decoding="async" />
+    {upcoming && <span class="upcoming-badge">Próximo evento</span>}
+  </a>
+  <div class="update-card-body">
+    <div class="update-meta"><span>{data.category}</span><time datetime={data.publishDate.toISOString()}>{formattedDate}</time></div>
+    <h2><a href={`/${data.slug}`}>{data.title}</a></h2>
+    <p>{data.description}</p>
+    <a class="text-link" href={`/${data.slug}`}>Ver actualización <span aria-hidden="true">→</span></a>
+  </div>
+</article>

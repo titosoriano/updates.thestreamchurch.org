@@ -1,0 +1,82 @@
+---
+import EventFacts from './EventFacts.astro';
+import ExperienceSection from './ExperienceSection.astro';
+import GuestSection from './GuestSection.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+
+interface Props {
+  update: {
+    data: {
+      title: string;
+      description: string;
+      eventDate?: Date;
+      eventTime?: string;
+      address?: string;
+      guestName?: string;
+    };
+  };
+}
+const { update } = Astro.props;
+const canonical = 'https://updates.thestreamchurch.org/fiesta-de-las-naciones-2026';
+const directionsUrl = 'https://www.google.com/maps/search/?api=1&query=11%20Technology%20Drive%20North%2C%20Warren%2C%20NJ%2007059';
+---
+<article class="fiesta-page">
+  <section class="fiesta-hero">
+    <div class="fiesta-hero-image" aria-hidden="true">
+      <img src="/images/fiesta-de-las-naciones-2026/hero.webp" alt="" decoding="async" fetchpriority="high" />
+    </div>
+    <div class="fiesta-hero-overlay" aria-hidden="true"></div>
+    <div class="fiesta-pattern fiesta-pattern-top" aria-hidden="true"></div>
+    <div class="shell fiesta-hero-content">
+      <div class="fiesta-hero-copy">
+        <p class="fiesta-kicker fiesta-kicker-light">The Stream Church presenta</p>
+        <h1><span>Fiesta de las</span> Naciones <em>2026</em></h1>
+        <p class="fiesta-manifesto">Un pueblo. Muchas naciones. Un solo Dios.</p>
+        <div class="fiesta-date-lockup">
+          <span>Domingo</span>
+          <strong>4 OCT</strong>
+          <span>1:00 PM</span>
+        </div>
+        <div class="fiesta-actions">
+          <a class="fiesta-btn fiesta-btn-primary" href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar</a>
+          <a class="fiesta-btn fiesta-btn-secondary" href="#compartir">Invita a alguien</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="shell fiesta-facts-wrap"><EventFacts data={update.data} /></div>
+
+  <section class="fiesta-free-banner" aria-label="Entrada y comida gratis">
+    <div class="shell"><strong>Entrada gratis</strong><span aria-hidden="true">•</span><strong>Comida gratis</strong><span aria-hidden="true">•</span><span>Todos son bienvenidos</span></div>
+  </section>
+
+  <ExperienceSection />
+  <GuestSection />
+
+  <section class="fiesta-section fiesta-location" aria-labelledby="fiesta-location-title">
+    <div class="shell fiesta-location-grid">
+      <div>
+        <p class="fiesta-kicker">Nos vemos en Warren</p>
+        <h2 id="fiesta-location-title">Una tarde para celebrar juntos.</h2>
+        <p>Trae a tu familia, invita a tus amigos y ven a disfrutar este día con nosotros. Queremos que cada persona se sienta bienvenida.</p>
+      </div>
+      <div class="fiesta-location-card">
+        <span>Mission Baptist Church - The Stream</span>
+        <strong>11 Technology Drive North<br />Warren, NJ 07059</strong>
+        <a class="fiesta-btn fiesta-btn-dark" href={directionsUrl} target="_blank" rel="noopener noreferrer">Abrir en Google Maps</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="fiesta-final-cta" id="compartir">
+    <div class="fiesta-pattern fiesta-pattern-bottom" aria-hidden="true"></div>
+    <div class="shell">
+      <p class="fiesta-kicker fiesta-kicker-light">4 de octubre · 1:00 PM</p>
+      <h2>La mesa está lista.<br />Solo faltas tú.</h2>
+      <p>Comparte esta invitación con alguien que quieras ver allí.</p>
+      <ShareButtons title={update.data.title} description={update.data.description} canonical={canonical} />
+      <a class="fiesta-btn fiesta-btn-cream" href={directionsUrl} target="_blank" rel="noopener noreferrer">Te esperamos</a>
+    </div>
+  </section>
+</article>
