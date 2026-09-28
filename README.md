@@ -34,6 +34,21 @@ bash scripts/deploy.test.sh
 npm run build
 ```
 
+## Typography
+
+Headings are set in **Fraunces** (SIL OFL), self-hosted from `public/fonts/` as a single
+subset `woff2`. Body copy stays on the system sans stack; there is no second webfont.
+
+The site makes **zero third-party requests** and must keep doing so - do not swap the
+self-hosted face for a Google Fonts or CDN `<link>`. Every heading picks the family up
+from the `--font-display` custom property in `src/styles/global.css`; never name the
+family at a call site.
+
+Provenance, licence, the exact subset and how to regenerate it are in
+`public/fonts/README.md`. `src/styles/fonts.test.ts` fails the build if the shipped file,
+the `@font-face`, the preload and the cache headers stop agreeing, or if the subset stops
+covering a character the site renders.
+
 ## Publishing model
 
 Each update has two parts:

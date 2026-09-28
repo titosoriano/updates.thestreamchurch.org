@@ -843,6 +843,38 @@ General expectations:
 
 Custom landing pages are intentional. Do not force all updates into one visually generic template if the update benefits from a dedicated design.
 
+### Typography
+
+Display/heading type is **Fraunces**, licensed under the SIL Open Font License 1.1 and
+self-hosted:
+
+```text
+public/fonts/fraunces-display.<contenthash>.woff2
+public/fonts/Fraunces-OFL.txt
+public/fonts/README.md
+```
+
+Rules that must survive future changes:
+
+- The site makes **no third-party requests**. Never replace the self-hosted face with a
+  Google Fonts or CDN link.
+- `woff2` only, one file, subset by hand. Body text stays on the system sans stack; do
+  not add a second webfont.
+- Headings read the family from `--font-display` in `src/styles/global.css`. Do not name
+  a font family at a call site.
+- The filename carries a content hash because `public/.htaccess` serves `.woff2` as
+  `immutable` for a year. Regenerating the font means renaming the file and updating
+  `src/styles/global.css`, `src/layouts/BaseLayout.astro`, `src/styles/fonts.test.ts`
+  and `public/fonts/README.md`.
+- `--font-display` keeps metric-matched fallback faces ahead of plain Georgia so the swap
+  does not move the layout, and keeps Georgia in the stack so text is never invisible.
+  `public/fonts/README.md` explains where those numbers come from.
+- Avoid `ch` units for widths on display-font elements; `ch` is the width of the font's
+  own `0` and moves when the face swaps. Use `em`.
+
+`src/styles/fonts.test.ts` enforces most of the above, including that the subset still
+covers every character the repository renders.
+
 ---
 
 ## Safe continuation from another machine or AI session

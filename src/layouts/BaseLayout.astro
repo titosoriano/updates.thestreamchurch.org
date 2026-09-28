@@ -31,6 +31,16 @@ const absoluteImage = image ? new URL(image, Astro.site ?? Astro.url.origin).hre
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#0d1b2a" />
+    {/* Every page opens on a Fraunces heading, so fetch the display face
+        alongside the stylesheet instead of after it. Self-hosted: see
+        public/fonts/README.md before touching the filename. */}
+    <link
+      rel="preload"
+      href="/fonts/fraunces-display.2ba51752.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <script is:inline>document.documentElement.classList.add('js');</script>
     <meta name="robots" content={robots} />
     <title>{fullTitle}</title>
