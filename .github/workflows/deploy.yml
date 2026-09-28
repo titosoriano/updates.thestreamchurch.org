@@ -67,7 +67,7 @@ jobs:
           base="https://updates.thestreamchurch.org"
           for path in "/" "/fiesta-de-las-naciones-2026" "/sitemap-index.xml"; do
             for attempt in 1 2 3 4 5; do
-              code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "$base$path" || echo 000)
+              code=$(curl -sSL -o /dev/null -w '%{http_code}' --max-time 20 "$base$path" || echo 000)
               if [ "$code" = "200" ]; then
                 echo "OK $path"
                 break
