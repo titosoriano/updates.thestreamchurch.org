@@ -1,6 +1,83 @@
 @import "tailwindcss";
 
 /* ==========================================================================
+   Display typeface
+   Fraunces, self-hosted. The site makes no third-party requests and this must
+   not change: no Google Fonts link, no CDN. Provenance, licence and the exact
+   subsetting commands live in public/fonts/README.md.
+
+   One variable file carries the whole 400-900 weight axis, so the 600/700/800
+   headings below all render at their true weight from a single 33 KB request.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/fraunces-display.2ba51752.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: normal;
+  /* Show the fallback immediately rather than a flash of invisible text. */
+  font-display: swap;
+}
+
+/* Metric-matched stand-ins for the two fonts that actually answer the fallback
+   stack, so the swap changes the letterforms and nothing else.
+
+   Fraunces sits at ascent .978 / descent .255 / line-gap 0 of the em. Left
+   alone, swapping it in moved every heading on both pages and grew the home
+   page by around 900px. Each stand-in below is scaled to the advance width
+   Fraunces actually renders at, measured in Chromium across the real headings
+   of this site; the ascent and descent overrides are those same em ratios
+   divided by the size-adjust, because size-adjust scales the em after the
+   overrides apply, which leaves the line box exactly as tall. Reference
+   metrics come from Gelasio (metric-compatible with Georgia) and Liberation
+   Serif (metric-compatible with Times New Roman).
+
+   Display type on this site renders at 400 and 700, and the two weights need
+   opposite corrections against Georgia, so each stand-in is declared per
+   weight rather than once. Verified: zero geometry change across the swap on
+   both pages at 390px and 1440px. */
+
+@font-face {
+  font-family: "Fraunces Fallback Georgia";
+  src: local("Georgia"), local("Gelasio");
+  font-weight: 400;
+  size-adjust: 102.1%;
+  ascent-override: 95.8%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Fraunces Fallback Georgia";
+  src: local("Georgia Bold"), local("Gelasio Bold");
+  font-weight: 700;
+  size-adjust: 93.6%;
+  ascent-override: 104.5%;
+  descent-override: 27.2%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Fraunces Fallback Times";
+  src: local("Times New Roman"), local("Liberation Serif"), local("Tinos");
+  font-weight: 400;
+  size-adjust: 112.4%;
+  ascent-override: 87%;
+  descent-override: 22.8%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Fraunces Fallback Times";
+  src: local("Times New Roman Bold"), local("Liberation Serif Bold"), local("Tinos Bold");
+  font-weight: 700;
+  size-adjust: 112.5%;
+  ascent-override: 86.9%;
+  descent-override: 22.7%;
+  line-gap-override: 0%;
+}
+
+/* ==========================================================================
    Design tokens
    Brand identity is unchanged; the values below are the existing palette
    promoted to named tokens so that every surface references one source.
@@ -28,8 +105,13 @@
      humanist, geometric feel on Android, Windows and Linux. */
   --font-sans: "Avenir Next", Avenir, "Nunito Sans", "Segoe UI", system-ui,
     -apple-system, "Helvetica Neue", Arial, sans-serif;
-  --font-display: Georgia, "Iowan Old Style", "Palatino Linotype", ui-serif,
-    "Times New Roman", serif;
+  /* Every heading reads the display face from here; never name the family at a
+     call site. The metric-matched faces come first so the swap does not move
+     anything, then the plain families they stand in for, so text is always
+     visible even if the webfont never arrives. */
+  --font-display: "Fraunces", "Fraunces Fallback Georgia",
+    "Fraunces Fallback Times", Georgia, "Iowan Old Style", "Palatino Linotype",
+    ui-serif, "Times New Roman", serif;
 }
 
 :root {
@@ -540,7 +622,10 @@ a, button { touch-action: manipulation; }
   font-family: var(--font-display);
   font-size: var(--text-h2);
   line-height: 1.1;
-  max-width: 22ch;
+  /* em, not ch: ch is the width of the font's own '0', so a ch measure moves
+     the moment the display face swaps in. These are the ch values PR #2 set,
+     resolved against Fraunces (1ch = 0.638em) and frozen. */
+  max-width: 14em;
 }
 
 /* auto-fill keeps 1 / 2 / 3 columns without extra breakpoints. */
@@ -690,7 +775,10 @@ a, button { touch-action: manipulation; }
   font-family: var(--font-display);
   font-size: var(--text-h2);
   line-height: 1.1;
-  max-width: 20ch;
+  /* em, not ch: ch is the width of the font's own '0', so a ch measure moves
+     the moment the display face swaps in. These are the ch values PR #2 set,
+     resolved against Fraunces (1ch = 0.638em) and frozen. */
+  max-width: 12.75em;
   margin: var(--space-2) 0 var(--space-4);
 }
 
@@ -1117,7 +1205,10 @@ a, button { touch-action: manipulation; }
 .fiesta-final-cta .shell { position: relative; z-index: 2; }
 
 .fiesta-final-cta h2 {
-  max-width: 18ch;
+  /* em, not ch: ch is the width of the font's own '0', so a ch measure moves
+     the moment the display face swaps in. These are the ch values PR #2 set,
+     resolved against Fraunces (1ch = 0.638em) and frozen. */
+  max-width: 11.5em;
   margin-inline: auto;
 }
 
