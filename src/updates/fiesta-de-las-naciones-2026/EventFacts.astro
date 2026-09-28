@@ -1,0 +1,28 @@
+---
+interface Props {
+  data: {
+    eventDate?: Date;
+    eventTime?: string;
+    address?: string;
+  };
+}
+const { data } = Astro.props;
+---
+<section class="fiesta-facts" aria-label="Información principal del evento">
+  <div class="fiesta-fact">
+    <span class="fiesta-fact-label">Fecha</span>
+    <strong>Domingo 4 de octubre de 2026</strong>
+  </div>
+  <div class="fiesta-fact">
+    <span class="fiesta-fact-label">Hora</span>
+    <strong><time datetime="2026-10-04T13:00:00-04:00">1:00 PM</time></strong>
+  </div>
+  <div class="fiesta-fact">
+    <span class="fiesta-fact-label">Lugar</span>
+    <strong>{data.address ?? '11 Technology Drive North, Warren, NJ 07059'}</strong>
+  </div>
+  <div class="fiesta-fact fiesta-fact-highlight">
+    <span class="fiesta-fact-label">Para todos</span>
+    <strong>Entrada y comida gratis</strong>
+  </div>
+</section>

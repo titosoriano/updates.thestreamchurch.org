@@ -1,0 +1,33 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { canonicalForSlug } from '../lib/updates';
+import { buildEventJsonLd, buildUpdateJsonLd } from '../lib/seo';
+
+interface Props {
+  update: {
+    data: {
+      title: string;
+      description: string;
+      slug: string;
+      image: string;
+      imageAlt: string;
+    };
+  };
+}
+
+const { update } = Astro.props;
+const canonical = canonicalForSlug(update.data.slug);
+const jsonLd = buildEventJsonLd(update, canonical) ?? buildUpdateJsonLd(update, canonical);
+---
+<BaseLayout
+  title={update.data.title}
+  description={update.data.description}
+  canonical={canonical}
+  image={update.data.image}
+  imageAlt={update.data.imageAlt}
+  type="article"
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <slot name="head" slot="head" />
+  <slot />
+</BaseLayout>

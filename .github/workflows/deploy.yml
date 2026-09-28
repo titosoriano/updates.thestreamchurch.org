@@ -1,0 +1,81 @@
+name: Deploy Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: updates-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Run tests
+        run: npm test
+
+      - name: Test deployment failure safety
+        run: bash scripts/deploy.test.sh
+
+      - name: Build site
+        env:
+          TZ: America/New_York
+        run: npm run build
+
+      - name: Verify build output
+        run: test -f dist/index.html
+
+      - name: Configure pinned SSH access
+        env:
+          SSH_KEY: ${{ secrets.INTERSERVER_SSH_KEY }}
+          SSH_HOST_KEY: ${{ secrets.INTERSERVER_SSH_HOST_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "$SSH_KEY"
+          test -n "$SSH_HOST_KEY"
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_HOST_KEY" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/deploy_key ~/.ssh/known_hosts
+
+      - name: Deploy staged release
+        env:
+          SSH_HOST: ${{ secrets.INTERSERVER_HOST }}
+          SSH_PORT: ${{ secrets.INTERSERVER_SSH_PORT }}
+          SSH_USER: ${{ secrets.INTERSERVER_USERNAME }}
+          SSH_KEY_PATH: /home/runner/.ssh/deploy_key
+          DEPLOY_PATH: ${{ secrets.INTERSERVER_DEPLOY_PATH }}
+          RELEASES_PATH: ${{ secrets.INTERSERVER_RELEASES_PATH }}
+        run: bash scripts/deploy.sh
+
+      - name: Smoke test production
+        run: |
+          set -euo pipefail
+          base="https://updates.thestreamchurch.org"
+          for path in "/" "/fiesta-de-las-naciones-2026" "/sitemap-index.xml"; do
+            for attempt in 1 2 3 4 5; do
+              code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "$base$path" || echo 000)
+              if [ "$code" = "200" ]; then
+                echo "OK $path"
+                break
+              fi
+              if [ "$attempt" = "5" ]; then
+                echo "FAIL $path returned $code" >&2
+                exit 1
+              fi
+              sleep 6
+            done
+          done

@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import UpdateCard from '../components/UpdateCard.astro';
+import { getPublishedUpdates } from '../lib/updates';
+
+const now = new Date();
+const updates = await getPublishedUpdates(now);
+const featured = updates.find((update) => update.data.featured) ?? null;
+const recent = featured ? updates.filter((update) => update.id !== featured.id) : updates;
+---
+<BaseLayout
+  title="Updates"
+  description="Eventos, anuncios, testimonios, misiones y noticias de The Stream Church en Warren, New Jersey."
+  canonical="https://updates.thestreamchurch.org/"
+>
+  <section class="updates-hero">
+    <div class="shell updates-hero-grid">
+      <div>
+        <p class="eyebrow">The Stream Church</p>
+        <h1>Updates</h1>
+      </div>
+      <p>Eventos, anuncios y momentos importantes de nuestra iglesia, presentados en un solo lugar y con una página diseñada especialmente para cada historia.</p>
+    </div>
+  </section>
+
+  {featured ? (
+    <section class="shell featured-section" aria-labelledby="featured-title">
+      <div class="section-heading"><span>Destacado</span><h2 id="featured-title">Lo más reciente en The Stream</h2></div>
+      <UpdateCard update={featured} now={now} />
+    </section>
+  ) : null}
+
+  <section class="shell recent-section" aria-labelledby="recent-title">
+    <div class="section-heading"><span>Actualizaciones</span><h2 id="recent-title">Noticias y eventos recientes</h2></div>
+    {recent.length > 0 ? (
+      <div class="updates-grid">{recent.map((update) => <UpdateCard update={update} now={now} />)}</div>
+    ) : (
+      <div class="empty-updates">
+        <p class="eyebrow">Muy pronto</p>
+        <h3>Estamos preparando nuestras primeras actualizaciones.</h3>
+        <p>Vuelve pronto para conocer los próximos eventos, testimonios y noticias de The Stream Church.</p>
+      </div>
+    )}
+  </section>
+</BaseLayout>

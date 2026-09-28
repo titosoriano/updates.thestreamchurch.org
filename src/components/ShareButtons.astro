@@ -1,0 +1,50 @@
+---
+import { buildFacebookShareUrl, buildWhatsAppShareUrl } from '../lib/share';
+interface Props { title: string; description: string; canonical: string; }
+const { title, description, canonical } = Astro.props;
+const whatsappUrl = buildWhatsAppShareUrl(title, canonical);
+const facebookUrl = buildFacebookShareUrl(canonical);
+---
+<div class="share-panel" data-share-panel data-url={canonical} data-title={title} data-description={description}>
+  <p class="share-label">Comparte esta invitación</p>
+  <div class="share-actions">
+    <a class="share-link" href={whatsappUrl} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+    <a class="share-link" href={facebookUrl} target="_blank" rel="noopener noreferrer">Facebook</a>
+    <button class="share-link" type="button" data-copy hidden>Copiar enlace</button>
+    <button class="share-link" type="button" data-native-share hidden>Compartir</button>
+  </div>
+  <p class="share-status" data-share-status aria-live="polite"></p>
+</div>
+<script is:inline>
+  document.querySelectorAll('[data-share-panel]').forEach((panel) => {
+    const url = panel.getAttribute('data-url');
+    const title = panel.getAttribute('data-title');
+    const description = panel.getAttribute('data-description');
+    const status = panel.querySelector('[data-share-status]');
+    const copy = panel.querySelector('[data-copy]');
+    const nativeShare = panel.querySelector('[data-native-share]');
+
+    if (copy && navigator.clipboard?.writeText) {
+      copy.hidden = false;
+      copy.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(url || location.href);
+          if (status) status.textContent = 'Enlace copiado.';
+        } catch {
+          if (status) status.textContent = 'No se pudo copiar. Usa WhatsApp o Facebook.';
+        }
+      });
+    }
+
+    if (nativeShare && typeof navigator.share === 'function') {
+      nativeShare.hidden = false;
+      nativeShare.addEventListener('click', async () => {
+        try {
+          await navigator.share({ title: title || document.title, text: description || '', url: url || location.href });
+        } catch (error) {
+          if (error?.name !== 'AbortError' && status) status.textContent = 'Puedes compartir usando WhatsApp o Facebook.';
+        }
+      });
+    }
+  });
+</script>
