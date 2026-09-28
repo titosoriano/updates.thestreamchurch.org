@@ -12,7 +12,7 @@ const navItems = [
 <header class="site-header">
   <div class="shell header-inner">
     <a class="brand" href="/" aria-label="The Stream Church Updates, inicio">
-      <img src="/images/logo.webp" width="48" height="48" alt="Logo de The Stream Church" />
+      <img src="/images/logo.webp" width="44" height="44" alt="Logo de The Stream Church" fetchpriority="high" />
       <span><small>Mission Baptist Church</small><strong>The Stream</strong></span>
     </a>
     <button id="nav-toggle" class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menú">
@@ -32,9 +32,28 @@ const navItems = [
       toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
       nav.classList.toggle('is-open', open);
     };
-    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
+
+    toggle.addEventListener('click', () => setOpen(!isOpen()));
+
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') { setOpen(false); toggle.focus(); }
+      if (event.key === 'Escape' && isOpen()) { setOpen(false); toggle.focus(); }
     });
+
+    // Dismissing by tapping outside is expected on touch; without it the
+    // drawer could only be closed from the toggle itself.
+    document.addEventListener('click', (event) => {
+      if (!isOpen()) return;
+      if (nav.contains(event.target) || toggle.contains(event.target)) return;
+      setOpen(false);
+    });
+
+    nav.addEventListener('click', (event) => {
+      if (event.target.closest('a')) setOpen(false);
+    });
+
+    // A resize into the desktop layout must not leave stale open state behind.
+    const desktop = window.matchMedia('(min-width: 900px)');
+    desktop.addEventListener('change', (event) => { if (event.matches) setOpen(false); });
   }
 </script>
