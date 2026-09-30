@@ -15,10 +15,13 @@ ErrorDocument 404 /404.html
 # rules below only fire once the type is known.
 <IfModule mod_mime.c>
   AddType font/woff2 .woff2
+  # /llms.txt and the per-update .md copies are Spanish text; declare UTF-8 so accents survive.
+  AddType text/markdown .md
+  AddCharset utf-8 .txt .md
 </IfModule>
 
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript
+  AddOutputFilterByType DEFLATE text/html text/plain text/markdown text/xml text/css text/javascript
   AddOutputFilterByType DEFLATE application/javascript application/json application/xml
   # woff2 is already Brotli-compressed; re-compressing it burns CPU for nothing.
   AddOutputFilterByType DEFLATE image/svg+xml
@@ -59,7 +62,7 @@ ErrorDocument 404 /404.html
   </If>
 
   # Pages and machine-readable indexes should reflect a deploy immediately.
-  <FilesMatch "\.(html|xml|json|txt)$">
+  <FilesMatch "\.(html|xml|json|txt|md)$">
     Header set Cache-Control "public, max-age=0, must-revalidate"
   </FilesMatch>
 

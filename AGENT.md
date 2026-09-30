@@ -365,6 +365,20 @@ Do not invent event details to fill schema fields.
 
 ---
 
+### llms.txt for AI assistants
+
+`/llms.txt` follows https://llmstxt.org/: one H1, a blockquote summary, then H2 link
+lists, with skippable links under `## Optional`. It is generated at build time by
+`src/pages/llms.txt.ts` from the same published updates as the home page, so a new
+update appears there without editing it by hand.
+
+Each update also gets a Markdown copy at its URL plus `.md`
+(`src/pages/[slug].md.ts`), with the event facts and the update body. Both are built in
+`src/lib/llms.ts` and tested in `src/lib/llms.test.ts`. `public/.htaccess` serves them as
+UTF-8, and the production smoke test checks `/llms.txt`.
+
+---
+
 ## CI
 
 Workflow:

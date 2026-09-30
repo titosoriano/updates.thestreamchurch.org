@@ -66,7 +66,7 @@ jobs:
         run: |
           set -euo pipefail
           base="https://updates.thestreamchurch.org"
-          for path in "/" "/fiesta-de-las-naciones-2026" "/sitemap-index.xml"; do
+          for path in "/" "/fiesta-de-las-naciones-2026" "/sitemap-index.xml" "/llms.txt"; do
             for attempt in 1 2 3 4 5; do
               code=$(curl -sSL -o /dev/null -w '%{http_code}' --max-time 20 "$base$path" || echo 000)
               if [ "$code" = "200" ]; then
