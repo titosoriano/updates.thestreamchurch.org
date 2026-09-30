@@ -10,7 +10,7 @@ Production URL: `https://updates.thestreamchurch.org`
 - TypeScript
 - Tailwind CSS v4
 - Vitest
-- GitHub pull requests for collaboration
+- Direct commits to `main` (no branches or pull requests)
 - GitHub Actions deployment over SSH
 - InterServer shared hosting
 - Cloudflare DNS/CDN in front of the origin
@@ -26,7 +26,7 @@ npm ci
 npm run dev
 ```
 
-Before opening a pull request:
+Before pushing to `main`:
 
 ```bash
 npm test
@@ -87,10 +87,11 @@ A page is public only when `draft` is `false` and `publishDate` is not in the fu
 
 ## Add a new update
 
-Example branch:
+Work directly on `main`; do not create a branch.
 
 ```bash
-git checkout -b feature/bautismos-2026
+git checkout main
+git pull
 ```
 
 Create the metadata file:
@@ -107,14 +108,12 @@ src/updates/bautismos-2026/Landing.astro
 
 Register it explicitly in `src/lib/templates.ts` using the same value as the metadata `template` field. A published entry with an unregistered template is expected to fail validation/build rather than silently use a generic page.
 
-Run the full local checks, push the feature branch, then open a pull request. Production deploys are only triggered from `main`.
+Run the full local checks, then commit and push directly to `main`. Every push to `main` deploys to production, so confirm that Deploy Production passes afterwards.
 
 ## Collaboration rules
 
-- Use `feature/<update-name>` branches for normal content/features.
-- Do not push directly to protected `main` once branch protection is enabled.
-- Pull requests should pass CI before merge.
-- Non-owner collaborator changes should receive at least one approval.
+- Commit and push directly to `main`. Do not create branches or pull requests unless the owner asks for one.
+- Run `npm test`, `bash scripts/deploy.test.sh` and `npm run build` before every push, because each push deploys.
 - Never commit cPanel, SSH, Cloudflare, password or private-key credentials.
 - Collaborators only need GitHub repository access.
 
