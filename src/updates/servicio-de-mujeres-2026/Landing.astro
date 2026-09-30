@@ -1,0 +1,109 @@
+---
+import ShareButtons from '../../components/ShareButtons.astro';
+import { responsiveSrcset } from '../../lib/images';
+import { canonicalForSlug } from '../../lib/updates';
+
+interface Props {
+  update: {
+    data: {
+      title: string;
+      description: string;
+      address?: string;
+    };
+  };
+}
+const { update } = Astro.props;
+const canonical = canonicalForSlug('servicio-de-mujeres-2026');
+const address = update.data.address ?? '11 Technology Drive North, Warren, NJ 07059';
+const directionsUrl = 'https://www.google.com/maps/search/?api=1&query=11%20Technology%20Drive%20North%2C%20Warren%2C%20NJ%2007059';
+---
+<article class="mujeres-page">
+  <section class="mujeres-hero">
+    <div class="mujeres-hero-image" aria-hidden="true">
+      <img
+        src="/images/servicio-de-mujeres-2026/hero.webp"
+        srcset={responsiveSrcset('/images/servicio-de-mujeres-2026/hero.webp', 1600)}
+        alt=""
+        width="1600"
+        height="919"
+        sizes="100vw"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+    </div>
+    <div class="shell mujeres-hero-content">
+      <p class="mujeres-kicker">Servicio de Mujeres</p>
+      <h1>Mujeres de <span>Espada</span></h1>
+      <p class="mujeres-lede">Una noche para fortalecernos en la Palabra y en la fe.</p>
+      <div class="mujeres-date-lockup">
+        <span>Viernes</span>
+        <strong>23 OCT</strong>
+        <span>6:30 PM</span>
+      </div>
+      <div class="mujeres-actions">
+        <a class="mujeres-btn mujeres-btn-primary" href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar</a>
+        <a class="mujeres-btn mujeres-btn-secondary" href="#compartir">Invita a alguien</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell mujeres-facts-wrap" aria-label="Información principal del servicio">
+    <div class="mujeres-facts">
+      <div class="mujeres-fact">
+        <span class="mujeres-fact-label">Fecha</span>
+        <strong>Viernes 23 de octubre de 2026</strong>
+      </div>
+      <div class="mujeres-fact">
+        <span class="mujeres-fact-label">Hora</span>
+        <strong><time datetime="2026-10-23T18:30:00-04:00">6:30 PM</time></strong>
+      </div>
+      <div class="mujeres-fact">
+        <span class="mujeres-fact-label">Lugar</span>
+        <strong>{address}</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="mujeres-section" aria-labelledby="mujeres-invitacion-title">
+    <div class="shell mujeres-narrow">
+      <p class="mujeres-kicker">Estás invitada</p>
+      <h2 id="mujeres-invitacion-title">Ven con tu mamá, tu hija, tu hermana y tus amigas.</h2>
+      <p>Te invitamos a nuestro Servicio de Mujeres con el lema "Mujeres de Espada". ¡Será una noche para fortalecernos en la Palabra y en la fe!</p>
+    </div>
+  </section>
+
+  <section class="mujeres-verse" aria-labelledby="mujeres-verse-title">
+    <div class="shell mujeres-narrow">
+      <h2 id="mujeres-verse-title" class="mujeres-visually-hidden">Versículo del lema</h2>
+      <blockquote>
+        <p>"Porque la palabra de Dios es viva y eficaz, y más cortante que toda espada de dos filos."</p>
+        <footer>Hebreos 4:12</footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="mujeres-section mujeres-location" aria-labelledby="mujeres-location-title">
+    <div class="shell mujeres-location-grid">
+      <div>
+        <p class="mujeres-kicker">Nos vemos en Warren</p>
+        <h2 id="mujeres-location-title">¡Te esperamos!</h2>
+        <p>Viernes 23 de octubre a las 6:30 PM.</p>
+      </div>
+      <div class="mujeres-location-card">
+        <span>Mission Baptist Church - The Stream</span>
+        <strong>11 Technology Drive North<br />Warren, NJ 07059</strong>
+        <a class="mujeres-btn mujeres-btn-dark" href={directionsUrl} target="_blank" rel="noopener noreferrer">Abrir en Google Maps</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mujeres-final-cta" id="compartir">
+    <div class="shell">
+      <p class="mujeres-kicker mujeres-kicker-light">23 de octubre · 6:30 PM</p>
+      <h2>Invita a las mujeres que quieres.</h2>
+      <p>Comparte esta invitación con tu mamá, tu hija, tu hermana o tus amigas.</p>
+      <ShareButtons title={update.data.title} description={update.data.description} canonical={canonical} />
+    </div>
+  </section>
+</article>

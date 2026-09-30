@@ -31,3 +31,16 @@ describe('Fiesta de las Naciones 2026 contract', () => {
     expect(source).not.toMatch(/septiembre\s+27|27\s+de\s+septiembre/i);
   });
 });
+
+
+describe('Servicio de Mujeres 2026 contract', () => {
+  const source = readFileSync(new URL('./updates/servicio-de-mujeres-2026.md', import.meta.url), 'utf8');
+
+  it('pins the approved event facts', () => {
+    expect(source).toContain('slug: \"servicio-de-mujeres-2026\"');
+    expect(source).toContain('eventDate: 2026-10-23');
+    expect(source).toContain('eventTime: \"6:30 PM\"');
+    expect(source).toMatch(/Mujeres de Espada/);
+    expect(source).toMatch(/Hebreos 4:12/);
+  });
+});

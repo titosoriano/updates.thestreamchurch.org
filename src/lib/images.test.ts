@@ -9,12 +9,13 @@ describe('responsive images', () => {
     );
   });
 
-  it('has generated variants for the event hero', () => {
+  it.each(['fiesta-de-las-naciones-2026', 'servicio-de-mujeres-2026'])('has generated variants for the %s hero', (slug) => {
+    const hero = `/images/${slug}/hero.webp`;
     for (const width of VARIANT_WIDTHS) {
-      const file = `public${variantPath('/images/fiesta-de-las-naciones-2026/hero.webp', width)}`;
+      const file = `public${variantPath(hero, width)}`;
       expect(existsSync(file), `${file} missing; run scripts/image-variants.mjs`).toBe(true);
     }
-    const share = `public${shareImagePath('/images/fiesta-de-las-naciones-2026/hero.webp')}`;
+    const share = `public${shareImagePath(hero)}`;
     expect(existsSync(share), `${share} missing; run scripts/image-variants.mjs`).toBe(true);
   });
 });
