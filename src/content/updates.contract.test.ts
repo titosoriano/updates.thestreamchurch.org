@@ -42,5 +42,7 @@ describe('Servicio de Mujeres 2026 contract', () => {
     expect(source).toContain('eventTime: \"6:30 PM\"');
     expect(source).toMatch(/Mujeres de Espada/);
     expect(source).toMatch(/Hebreos 4:12/);
+    expect(source).toMatch(/Entrada gratis/);
+    expect(source).toMatch(/refrigerio gratis/);
   });
 });

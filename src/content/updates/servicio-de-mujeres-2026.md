@@ -1,7 +1,7 @@
 ---
 title: "Servicio de Mujeres: Mujeres de Espada"
 slug: "servicio-de-mujeres-2026"
-description: "Te invitamos al Servicio de Mujeres con el lema Mujeres de Espada, el viernes 23 de octubre de 2026 a las 6:30 PM en The Stream Church."
+description: "Te invitamos al Servicio de Mujeres con el lema Mujeres de Espada, el viernes 23 de octubre de 2026 a las 6:30 PM en The Stream Church. Entrada y refrigerio gratis."
 publishDate: 2026-09-30
 category: "Eventos"
 featured: false
@@ -23,6 +23,8 @@ tags:
 Te invitamos a nuestro Servicio de Mujeres con el lema "Mujeres de Espada".
 
 Viernes 23 de octubre de 2026 a las 6:30 PM.
+
+Entrada gratis y refrigerio gratis.
 
 Ven con tu mamá, tu hija, tu hermana y tus amigas. ¡Será una noche para fortalecernos en la Palabra y en la fe!
 
