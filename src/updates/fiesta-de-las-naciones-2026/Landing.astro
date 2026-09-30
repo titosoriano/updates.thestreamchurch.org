@@ -3,6 +3,7 @@ import EventFacts from './EventFacts.astro';
 import ExperienceSection from './ExperienceSection.astro';
 import GuestSection from './GuestSection.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
+import { responsiveSrcset } from '../../lib/images';
 
 interface Props {
   update: {
@@ -23,16 +24,27 @@ const directionsUrl = 'https://www.google.com/maps/search/?api=1&query=11%20Tech
 <article class="fiesta-page">
   <section class="fiesta-hero">
     <div class="fiesta-hero-image" aria-hidden="true">
-      <img
-        src="/images/fiesta-de-las-naciones-2026/hero.webp"
-        alt=""
-        width="1600"
-        height="919"
-        sizes="100vw"
-        loading="eager"
-        decoding="async"
-        fetchpriority="high"
-      />
+      {/* Phones only ever see the centre of the wide photo (object-fit: cover),
+          so they get a portrait crop instead of downloading the full width. */}
+      <picture>
+        <source
+          media="(max-width: 899px)"
+          srcset="/images/fiesta-de-las-naciones-2026/hero-mobile.webp"
+          width="760"
+          height="919"
+        />
+        <img
+          src="/images/fiesta-de-las-naciones-2026/hero.webp"
+          srcset={responsiveSrcset('/images/fiesta-de-las-naciones-2026/hero.webp', 1600)}
+          alt=""
+          width="1600"
+          height="919"
+          sizes="100vw"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </picture>
     </div>
     <div class="fiesta-hero-overlay" aria-hidden="true"></div>
     <div class="fiesta-pattern fiesta-pattern-top" aria-hidden="true"></div>

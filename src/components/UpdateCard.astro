@@ -1,5 +1,6 @@
 ---
 import { cardDate, formatContentDate } from '../lib/dates';
+import { responsiveSrcset } from '../lib/images';
 
 interface Props {
   update: {
@@ -15,22 +16,25 @@ interface Props {
     };
   };
   now?: Date;
+  priority?: boolean;
 }
-const { update, now = new Date() } = Astro.props;
+const { update, now = new Date(), priority = false } = Astro.props;
 const { data } = update;
 const displayDate = cardDate(data);
 const formattedDate = formatContentDate(displayDate);
 const upcoming = data.eventDate ? data.eventDate.getTime() >= now.getTime() : false;
 ---
 <article class="update-card">
-  <a class="update-card-media" href={`/${data.slug}`} aria-label={`Leer ${data.title}`}>
+  <a class="update-card-media" href={`/${data.slug}`} tabindex="-1" aria-hidden="true">
     <img
       src={data.image}
-      alt={data.imageAlt}
+      srcset={responsiveSrcset(data.image, 1600)}
+      alt=""
       width="1600"
       height="919"
       sizes="(min-width: 1200px) 33vw, (min-width: 900px) 50vw, 100vw"
-      loading="lazy"
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : undefined}
       decoding="async"
     />
     {upcoming && <span class="upcoming-badge">Próximo evento</span>}

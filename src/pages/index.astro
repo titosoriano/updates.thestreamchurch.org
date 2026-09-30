@@ -26,7 +26,7 @@ const recent = featured ? updates.filter((update) => update.id !== featured.id) 
   {featured ? (
     <section class="shell featured-section" aria-labelledby="featured-title">
       <div class="section-heading"><span>Destacado</span><h2 id="featured-title">Lo más reciente en The Stream</h2></div>
-      <UpdateCard update={featured} now={now} />
+      <UpdateCard update={featured} now={now} priority />
     </section>
   ) : null}
 

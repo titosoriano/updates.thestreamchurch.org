@@ -492,6 +492,9 @@ a, button { touch-action: manipulation; }
   font-weight: 800;
 }
 
+/* The brand red is too dark to read on the midnight hero. */
+.updates-hero .eyebrow { color: #ff9aa0; }
+
 .button-row {
   display: flex;
   flex-wrap: wrap;
@@ -817,6 +820,9 @@ a, button { touch-action: manipulation; }
 .fiesta-hero-image,
 .fiesta-hero-overlay { position: absolute; inset: 0; }
 
+.fiesta-hero-image picture { display: block; }
+
+.fiesta-hero-image picture,
 .fiesta-hero-image img {
   width: 100%;
   height: 100%;
@@ -872,7 +878,8 @@ a, button { touch-action: manipulation; }
   color: var(--color-event-red);
 }
 
-.fiesta-kicker-light { color: var(--color-fiesta-gold); }
+/* Slightly lighter than --color-fiesta-gold so it clears 4.5:1 on the event red. */
+.fiesta-kicker-light { color: #f7d96e; }
 
 .fiesta-hero h1 {
   margin: 0;
