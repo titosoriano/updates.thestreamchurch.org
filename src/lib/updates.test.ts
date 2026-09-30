@@ -45,7 +45,7 @@ describe('slug rules', () => {
 
 it('builds the canonical update URL', () => {
   expect(canonicalForSlug('fiesta-de-las-naciones-2026')).toBe(
-    'https://updates.thestreamchurch.org/fiesta-de-las-naciones-2026'
+    'https://updates.thestreamchurch.org/fiesta-de-las-naciones-2026/'
   );
 });
 

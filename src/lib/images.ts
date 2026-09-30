@@ -6,6 +6,14 @@ export function variantPath(src: string, width: number): string {
   return src.replace(/\.webp$/, `-${width}.webp`);
 }
 
+// Social previews: 1200x630 JPEG, because not every app that unfurls links
+// (LinkedIn, some messengers) reads WebP.
+export const SHARE_IMAGE = { width: 1200, height: 630 } as const;
+
+export function shareImagePath(src: string): string {
+  return src.replace(/\.webp$/, '-share.jpg');
+}
+
 export function responsiveSrcset(src: string, originalWidth: number): string {
   return [...VARIANT_WIDTHS.map((w) => `${variantPath(src, w)} ${w}w`), `${src} ${originalWidth}w`].join(', ');
 }

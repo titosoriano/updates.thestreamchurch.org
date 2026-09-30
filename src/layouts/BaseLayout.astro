@@ -9,6 +9,8 @@ interface Props {
   canonical?: string;
   image?: string;
   imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   type?: string;
   robots?: string;
 }
@@ -18,10 +20,14 @@ const {
   canonical = Astro.url.href,
   image,
   imageAlt = '',
+  imageWidth,
+  imageHeight,
   type = 'website',
   robots = 'index, follow',
 } = Astro.props;
 const fullTitle = title.includes('The Stream') ? title : `${title} | The Stream Church`;
+// A noindex page (the 404) must not claim a canonical URL of its own.
+const indexable = !robots.includes('noindex');
 const absoluteImage = image ? new URL(image, Astro.site ?? Astro.url.origin).href : undefined;
 ---
 <!doctype html>
@@ -46,14 +52,16 @@ const absoluteImage = image ? new URL(image, Astro.site ?? Astro.url.origin).hre
     <meta name="robots" content={robots} />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {indexable && <link rel="canonical" href={canonical} />}
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
+    {indexable && <meta property="og:url" content={canonical} />}
     <meta property="og:type" content={type} />
     <meta property="og:site_name" content="The Stream Church" />
     <meta property="og:locale" content="es_US" />
     {absoluteImage && <meta property="og:image" content={absoluteImage} />}
+    {absoluteImage && imageWidth && <meta property="og:image:width" content={String(imageWidth)} />}
+    {absoluteImage && imageHeight && <meta property="og:image:height" content={String(imageHeight)} />}
     {absoluteImage && imageAlt && <meta property="og:image:alt" content={imageAlt} />}
     <meta name="twitter:card" content={absoluteImage ? 'summary_large_image' : 'summary'} />
     <meta name="twitter:title" content={fullTitle} />

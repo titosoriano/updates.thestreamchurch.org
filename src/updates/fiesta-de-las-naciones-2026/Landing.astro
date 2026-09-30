@@ -4,6 +4,7 @@ import ExperienceSection from './ExperienceSection.astro';
 import GuestSection from './GuestSection.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import { responsiveSrcset } from '../../lib/images';
+import { canonicalForSlug } from '../../lib/updates';
 
 interface Props {
   update: {
@@ -18,7 +19,7 @@ interface Props {
   };
 }
 const { update } = Astro.props;
-const canonical = 'https://updates.thestreamchurch.org/fiesta-de-las-naciones-2026';
+const canonical = canonicalForSlug('fiesta-de-las-naciones-2026');
 const directionsUrl = 'https://www.google.com/maps/search/?api=1&query=11%20Technology%20Drive%20North%2C%20Warren%2C%20NJ%2007059';
 ---
 <article class="fiesta-page">

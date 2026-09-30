@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { buildFacebookShareUrl, buildWhatsAppShareUrl } from './share';
 
-const canonical = 'https://updates.thestreamchurch.org/fiesta-de-las-naciones-2026';
+const canonical = 'https://updates.thestreamchurch.org/fiesta-de-las-naciones-2026/';
 
 describe('share URLs', () => {
   it('builds a WhatsApp link with title and canonical URL', () => {

@@ -1,6 +1,22 @@
 const SITE_ORIGIN = 'https://updates.thestreamchurch.org';
 const CHURCH_URL = 'https://thestreamchurch.org/';
 
+const CHURCH = {
+  '@type': 'Church',
+  name: 'Mission Baptist Church - The Stream',
+  alternateName: 'The Stream Church',
+  url: CHURCH_URL,
+  logo: `${SITE_ORIGIN}/images/logo.webp`,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '11 Technology Drive North',
+    addressLocality: 'Warren',
+    addressRegion: 'NJ',
+    postalCode: '07059',
+    addressCountry: 'US',
+  },
+};
+
 interface SeoUpdate {
   data: {
     title: string;
@@ -12,6 +28,7 @@ interface SeoUpdate {
     eventTime?: string;
     locationName?: string;
     address?: string;
+    guestName?: string;
   };
 }
 
@@ -93,12 +110,18 @@ export function buildEventJsonLd(update: SeoUpdate, canonicalUrl: string): Recor
       name: data.locationName,
       address: { '@type': 'PostalAddress', ...address },
     },
-    organizer: {
-      '@type': 'Organization',
-      name: 'Mission Baptist Church - The Stream',
-      alternateName: 'The Stream Church',
-      url: CHURCH_URL,
+    organizer: CHURCH,
+    inLanguage: 'es',
+    // Every event so far is announced as free entry; keep this in step with the page copy.
+    isAccessibleForFree: true,
+    offers: {
+      '@type': 'Offer',
+      price: 0,
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      url: canonicalUrl,
     },
+    ...(data.guestName ? { performer: { '@type': 'Person', name: data.guestName } } : {}),
   };
 }
 
@@ -112,10 +135,40 @@ export function buildUpdateJsonLd(update: SeoUpdate, canonicalUrl: string): Reco
     url: canonicalUrl,
     image: absoluteImage(data.image),
     datePublished: data.publishDate?.toISOString(),
-    publisher: {
-      '@type': 'Organization',
-      name: 'Mission Baptist Church - The Stream',
-      url: CHURCH_URL,
-    },
+    inLanguage: 'es',
+    publisher: CHURCH,
+  };
+}
+
+export function buildBreadcrumbJsonLd(title: string, canonicalUrl: string): Record<string, any> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Updates', item: `${SITE_ORIGIN}/` },
+      { '@type': 'ListItem', position: 2, name: title, item: canonicalUrl },
+    ],
+  };
+}
+
+// Home page: who publishes the site, the site itself, and the updates it lists.
+export function buildHomeJsonLd(updates: readonly { title: string; url: string }[]): Record<string, any> {
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      { ...CHURCH, '@id': `${CHURCH_URL}#organization` },
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_ORIGIN}/#website`,
+        name: 'The Stream Church Updates',
+        url: `${SITE_ORIGIN}/`,
+        inLanguage: 'es',
+        publisher: { '@id': `${CHURCH_URL}#organization` },
+      },
+      {
+        '@type': 'ItemList',
+        itemListElement: updates.map((u, i) => ({ '@type': 'ListItem', position: i + 1, name: u.title, url: u.url })),
+      },
+    ],
   };
 }

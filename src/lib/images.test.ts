@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { responsiveSrcset, VARIANT_WIDTHS, variantPath } from './images';
+import { responsiveSrcset, shareImagePath, VARIANT_WIDTHS, variantPath } from './images';
 
 describe('responsive images', () => {
   it('lists every variant and the original as the widest candidate', () => {
@@ -14,5 +14,7 @@ describe('responsive images', () => {
       const file = `public${variantPath('/images/fiesta-de-las-naciones-2026/hero.webp', width)}`;
       expect(existsSync(file), `${file} missing; run scripts/image-variants.mjs`).toBe(true);
     }
+    const share = `public${shareImagePath('/images/fiesta-de-las-naciones-2026/hero.webp')}`;
+    expect(existsSync(share), `${share} missing; run scripts/image-variants.mjs`).toBe(true);
   });
 });

@@ -53,6 +53,6 @@ describe('update markdown', () => {
   it('includes the facts, the body and the canonical page', () => {
     expect(md).toContain('- Dirección: 11 Technology Drive North, Warren, NJ 07059');
     expect(md).toContain('Domingo 4 de octubre de 2026 a la 1:00 PM.');
-    expect(md).toContain('Página completa: https://updates.thestreamchurch.org/fiesta-de-las-naciones-2026');
+    expect(md).toContain('Página completa: https://updates.thestreamchurch.org/fiesta-de-las-naciones-2026/');
   });
 });

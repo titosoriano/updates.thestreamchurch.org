@@ -31,7 +31,7 @@ const longDate = new Intl.DateTimeFormat('es-US', {
 const isoDate = (date: Date) => date.toISOString().slice(0, 10);
 
 export function markdownUrlForSlug(slug: string): string {
-  return `${canonicalForSlug(slug)}.md`;
+  return `${SITE_ORIGIN}/${slug}.md`;
 }
 
 function eventFacts(data: LlmsUpdate['data']): string[] {

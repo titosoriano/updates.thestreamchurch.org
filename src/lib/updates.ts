@@ -36,9 +36,16 @@ export function assertUniqueSlugs<T extends UpdateEntryLike>(updates: readonly T
   }
 }
 
-export function canonicalForSlug(slug: string): string {
+// Pages are built as <slug>/index.html, and the server 301s "/<slug>" to "/<slug>/".
+// Canonicals, the sitemap and internal links all use the trailing-slash form so
+// search engines never see a canonical that redirects.
+export function pathForSlug(slug: string): string {
   assertSafeSlug(slug);
-  return `${SITE_ORIGIN}/${slug}`;
+  return `/${slug}/`;
+}
+
+export function canonicalForSlug(slug: string): string {
+  return `${SITE_ORIGIN}${pathForSlug(slug)}`;
 }
 
 export async function getPublishedUpdates(now = new Date()) {

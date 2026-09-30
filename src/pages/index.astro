@@ -1,18 +1,27 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import UpdateCard from '../components/UpdateCard.astro';
-import { getPublishedUpdates } from '../lib/updates';
+import { canonicalForSlug, getPublishedUpdates } from '../lib/updates';
+import { buildHomeJsonLd } from '../lib/seo';
+import { SHARE_IMAGE, shareImagePath } from '../lib/images';
 
 const now = new Date();
 const updates = await getPublishedUpdates(now);
 const featured = updates.find((update) => update.data.featured) ?? null;
 const recent = featured ? updates.filter((update) => update.id !== featured.id) : updates;
+const shareImage = featured ?? updates[0] ?? null;
+const jsonLd = buildHomeJsonLd(updates.map((u) => ({ title: u.data.title, url: canonicalForSlug(u.data.slug) })));
 ---
 <BaseLayout
-  title="Updates"
-  description="Eventos, anuncios, testimonios, misiones y noticias de The Stream Church en Warren, New Jersey."
+  title="Updates: eventos y noticias de The Stream Church"
+  description="Eventos, anuncios, misiones y testimonios de The Stream Church, iglesia bautista hispana en Warren, New Jersey. Entérate de lo próximo y acompáñanos."
   canonical="https://updates.thestreamchurch.org/"
+  image={shareImage ? shareImagePath(shareImage.data.image) : undefined}
+  imageAlt={shareImage?.data.imageAlt}
+  imageWidth={shareImage ? SHARE_IMAGE.width : undefined}
+  imageHeight={shareImage ? SHARE_IMAGE.height : undefined}
 >
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <section class="updates-hero">
     <div class="shell updates-hero-grid">
       <div>

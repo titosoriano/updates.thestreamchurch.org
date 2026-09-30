@@ -1,7 +1,8 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import { canonicalForSlug } from '../lib/updates';
-import { buildEventJsonLd, buildUpdateJsonLd } from '../lib/seo';
+import { SHARE_IMAGE, shareImagePath } from '../lib/images';
+import { buildBreadcrumbJsonLd, buildEventJsonLd, buildUpdateJsonLd } from '../lib/seo';
 
 interface Props {
   update: {
@@ -17,17 +18,22 @@ interface Props {
 
 const { update } = Astro.props;
 const canonical = canonicalForSlug(update.data.slug);
-const jsonLd = buildEventJsonLd(update, canonical) ?? buildUpdateJsonLd(update, canonical);
+const jsonLd = [
+  buildEventJsonLd(update, canonical) ?? buildUpdateJsonLd(update, canonical),
+  buildBreadcrumbJsonLd(update.data.title, canonical),
+];
 ---
 <BaseLayout
   title={update.data.title}
   description={update.data.description}
   canonical={canonical}
-  image={update.data.image}
+  image={shareImagePath(update.data.image)}
   imageAlt={update.data.imageAlt}
+  imageWidth={SHARE_IMAGE.width}
+  imageHeight={SHARE_IMAGE.height}
   type="article"
 >
-  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  {jsonLd.map((item) => <script slot="head" type="application/ld+json" set:html={JSON.stringify(item)} />)}
   <slot name="head" slot="head" />
   <slot />
 </BaseLayout>

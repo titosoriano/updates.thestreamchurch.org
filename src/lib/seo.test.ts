@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { buildEventJsonLd, buildUpdateJsonLd } from './seo';
+import { buildBreadcrumbJsonLd, buildEventJsonLd, buildHomeJsonLd, buildUpdateJsonLd } from './seo';
 
-const canonical = 'https://updates.thestreamchurch.org/fiesta-de-las-naciones-2026';
+const canonical = 'https://updates.thestreamchurch.org/fiesta-de-las-naciones-2026/';
 const update = {
   data: {
     title: 'Fiesta de las Naciones 2026',
@@ -38,4 +38,29 @@ describe('Event JSON-LD', () => {
 
 it('uses Article structured data for non-event updates', () => {
   expect(buildUpdateJsonLd({ data: { ...update.data, eventTime: undefined } }, canonical)['@type']).toBe('Article');
+});
+
+describe('extra structured data', () => {
+  it('marks the event free, Spanish, and names the guest', () => {
+    const json = buildEventJsonLd({ data: { ...update.data, guestName: 'Chanel Novas' } }, canonical)!;
+    expect(json.isAccessibleForFree).toBe(true);
+    expect(json.offers.price).toBe(0);
+    expect(json.inLanguage).toBe('es');
+    expect(json.performer.name).toBe('Chanel Novas');
+  });
+
+  it('omits performer when there is no guest', () => {
+    expect(buildEventJsonLd(update, canonical)!.performer).toBeUndefined();
+  });
+
+  it('builds a two-level breadcrumb ending at the update', () => {
+    const crumbs = buildBreadcrumbJsonLd('Fiesta de las Naciones 2026', canonical);
+    expect(crumbs.itemListElement.map((i: any) => i.item)).toEqual(['https://updates.thestreamchurch.org/', canonical]);
+  });
+
+  it('lists published updates on the home page graph', () => {
+    const graph = buildHomeJsonLd([{ title: 'Fiesta de las Naciones 2026', url: canonical }])['@graph'];
+    expect(graph.map((n: any) => n['@type'])).toEqual(['Church', 'WebSite', 'ItemList']);
+    expect(graph[2].itemListElement[0].url).toBe(canonical);
+  });
 });

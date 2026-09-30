@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://updates.thestreamchurch.org/sitemap-index.xml

@@ -363,6 +363,28 @@ For event updates, verify structured data uses the real date, time, location, an
 
 Do not invent event details to fill schema fields.
 
+Rules added by the 2026-09-29 SEO pass:
+
+- **URLs end in `/`.** Pages build as `<slug>/index.html` and the server 301s `/<slug>`
+  to `/<slug>/`. `pathForSlug()` / `canonicalForSlug()` in `src/lib/updates.ts` return the
+  trailing-slash form, and canonicals, internal links, share links and the sitemap all use
+  it. Never hand-write an update URL; call those helpers.
+- **`public/robots.txt`** allows everything and points to `/sitemap-index.xml`.
+- **Noindex pages (the 404) get no canonical or `og:url`.** `BaseLayout.astro` drops both
+  when `robots` contains `noindex`.
+- **Structured data** (`src/lib/seo.ts`):
+  - home: `@graph` with the church (`Church`), the `WebSite`, and an `ItemList` of
+    published updates;
+  - event pages: `Event` with `inLanguage`, `isAccessibleForFree`, a free `Offer`, and
+    `performer` when `guestName` is set, plus a `BreadcrumbList`;
+  - non-event updates: `Article` plus the same `BreadcrumbList`.
+  `isAccessibleForFree` and the free offer assume free entry. If an event ever charges,
+  change them.
+- **Share images are 1200×630 JPEG** (`<image>-share.jpg`, from `shareImagePath()` in
+  `src/lib/images.ts`), with `og:image:width`/`height`. `scripts/image-variants.mjs`
+  generates them with the other variants. The home page uses the featured update's share
+  image.
+
 ---
 
 ### llms.txt for AI assistants
@@ -510,6 +532,7 @@ Current smoke tests include:
 /
  /fiesta-de-las-naciones-2026
  /sitemap-index.xml
+ /llms.txt
 ```
 
 All must resolve to final HTTP 200 responses.
