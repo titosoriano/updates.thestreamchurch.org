@@ -303,7 +303,7 @@ bash scripts/deploy.test.sh
 npm run build
 ```
 
-Then push the feature branch and normally open a pull request.
+Then commit and push directly to `main` (see the branch policy below).
 
 Production deployment is triggered only by changes reaching `main`.
 
@@ -666,23 +666,17 @@ Do not add a second competing HTTPS redirect rule without testing redirect loops
 
 ## Branch and collaboration policy
 
-Preferred normal workflow:
+Current workflow, set by the owner on 2026-09-29: **work directly on `main`**. Do not
+create feature branches or pull requests unless the owner asks for one.
 
 ```text
-feature branch
-    -> pull request
-    -> CI
-    -> merge to main
-    -> production deployment
+commit on main
+    -> push
+    -> CI + Deploy Production
 ```
 
-Examples:
-
-```text
-feature/bautismos-2026
-feature/new-series
-fix/share-buttons
-```
+Because every push to `main` deploys, run `npm test`, `bash scripts/deploy.test.sh` and
+`npm run build` before each push, and check that Deploy Production passes afterwards.
 
 As of 2026-09-28, `main` is **not yet protected** by a GitHub ruleset.
 
@@ -698,7 +692,8 @@ Recommended future `main` ruleset:
 - approvals can remain 0 while Santos is the only maintainer
 - increase approvals when collaborators are added
 
-Until protection is enabled, direct pushes to `main` are technically possible. Use them only for deliberate owner-approved maintenance/hotfixes.
+If a ruleset that requires pull requests is enabled later, it will conflict with the
+direct-to-`main` workflow above; confirm with the owner which one wins and update this section.
 
 ---
 
@@ -764,6 +759,7 @@ Check:
 - slug format
 - template field
 - template registration
+- Lighthouse results or the performance rules above
 - image path
 
 ### Page exists but workflow reports 301
@@ -875,6 +871,57 @@ Rules that must survive future changes:
 `src/styles/fonts.test.ts` enforces most of the above, including that the subset still
 covers every character the repository renders.
 
+### Performance and Lighthouse
+
+Target: **100 in all four Lighthouse categories** (Performance, Accessibility, Best
+Practices, SEO) on the mobile test, for every page. The 2026-09-29 audit reached 100 on
+`/` and `/fiesta-de-las-naciones-2026` (local build; confirm on pagespeed.web.dev).
+
+What the audit found and fixed, and the rule each fix now implies:
+
+- **Stylesheet blocked first paint.** `astro.config.mjs` uses
+  `build.inlineStylesheets: 'always'`, so the CSS ships inside each page instead of as a
+  separate request. Keep it that way; keep `global.css` small.
+- **Oversized hero photo.** Large photos get narrower copies (640/960/1280 px) through
+  `responsiveSrcset()` in `src/lib/images.ts`. After adding or replacing a large photo, run:
+
+  ```bash
+  node --experimental-strip-types scripts/image-variants.mjs public/images/<slug>/hero.webp
+  ```
+
+  `src/lib/images.test.ts` fails if a variant the site references is missing.
+- **Phones downloaded the full-width hero.** The event hero uses `object-fit: cover`, so a
+  phone only shows its centre. `Landing.astro` serves a portrait crop
+  (`hero-mobile.webp`, 760×919) through `<picture>` below 900 px. Replacing the hero means
+  re-cutting that crop too.
+- **Above-the-fold images must not be lazy.** The LCP image (the event hero, and the
+  featured card on the home page via `<UpdateCard priority />`) uses `loading="eager"` and
+  `fetchpriority="high"`. Everything below the fold stays `loading="lazy"`.
+- **Every image keeps `width` and `height`** so nothing shifts while loading (CLS 0).
+- **Compress photos** as WebP around quality 72–75 before committing; the original hero
+  went from 188 KB to 125 KB with no visible change.
+- **Missing favicon.** `BaseLayout.astro` links `/images/logo.webp` as the icon. Without
+  it, every page logs a `/favicon.ico` 404 and loses Best Practices points.
+- **Contrast.** Small text must reach 4.5:1. The brand red `#b5222c` is not readable on
+  the midnight background, and `--color-fiesta-gold` is just short on the event red, so
+  `.updates-hero .eyebrow` and `.fiesta-kicker-light` use lighter tones. Check contrast
+  when putting coloured text on a coloured background.
+- **Link names match visible text.** Do not put an `aria-label` on a link that has
+  visible text unless it starts with that text. A duplicate image link next to a titled
+  link uses `tabindex="-1" aria-hidden="true"` with `alt=""`.
+
+To audit locally, build, serve `dist/` and run Lighthouse against it:
+
+```bash
+npm run build
+npx sirv-cli dist --port 4321 &
+npx lighthouse http://localhost:4321/ --chrome-flags="--headless=new" \
+  --only-categories=performance,accessibility,best-practices,seo --view
+```
+
+A local server has no cache headers or compression, so ignore Lighthouse's cache and
+compression notes there; production gets both from `public/.htaccess`.
+
 ---
 
 ## Safe continuation from another machine or AI session
@@ -887,7 +934,7 @@ Before making changes:
 4. read `docs/DEPLOYMENT.md`
 5. inspect current GitHub Actions status
 6. verify whether branch protection has since been enabled
-7. create a feature branch for normal work
+7. work on `main` (no feature branches unless the owner asks)
 8. run tests and build before proposing merge
 9. never copy credentials from old chat history into code
 
