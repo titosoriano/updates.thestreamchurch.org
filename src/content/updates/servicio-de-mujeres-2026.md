@@ -7,8 +7,8 @@ category: "Eventos"
 featured: false
 draft: false
 template: "servicio-de-mujeres-2026"
-image: "/images/servicio-de-mujeres-2026/hero.webp"
-imageAlt: "Espada dorada sobre un fondo morado, símbolo del Servicio de Mujeres: Mujeres de Espada"
+image: "/images/servicio-de-mujeres-2026/espada1.webp"
+imageAlt: "Flyer de Mujeres de Espada con una Biblia y flores: viernes 23 de octubre de 2026 a las 6:30 PM"
 eventDate: 2026-10-23
 eventTime: "6:30 PM"
 locationName: "Mission Baptist Church - The Stream"

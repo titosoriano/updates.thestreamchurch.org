@@ -9,7 +9,7 @@ describe('responsive images', () => {
     );
   });
 
-  it.each(['fiesta-de-las-naciones-2026/hero', 'fiesta-de-las-naciones-2026/fiesta1', 'fiesta-de-las-naciones-2026/bg1', 'servicio-de-mujeres-2026/hero'])('has generated variants for %s', (image) => {
+  it.each(['fiesta-de-las-naciones-2026/hero', 'fiesta-de-las-naciones-2026/fiesta1', 'fiesta-de-las-naciones-2026/bg1', 'servicio-de-mujeres-2026/hero', 'servicio-de-mujeres-2026/espada-hero', 'servicio-de-mujeres-2026/espada1'])('has generated variants for %s', (image) => {
     const hero = `/images/${image}.webp`;
     for (const width of VARIANT_WIDTHS) {
       const file = `public${variantPath(hero, width)}`;
