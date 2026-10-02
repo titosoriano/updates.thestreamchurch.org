@@ -79,6 +79,8 @@ There is currently:
 
 The goal is to keep publishing fast, auditable, inexpensive, and easy to migrate.
 
+Shared navigation: the header identifies this site as The Stream Church Updates. `Inicio` links to `/`, `Actualizaciones` links to `/#actualizaciones`, and `Sitio de la iglesia` is the separate link to the main church website. Preserve the mobile toggle, Escape dismissal, and no-JavaScript navigation.
+
 ---
 
 ## Node and dependency policy

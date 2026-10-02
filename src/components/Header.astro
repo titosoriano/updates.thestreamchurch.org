@@ -1,25 +1,26 @@
 ---
-const navItems = [
-  ['Inicio', 'https://thestreamchurch.org/'],
-  ['Quiénes somos', 'https://thestreamchurch.org/mision-vision'],
-  ['Servicios', 'https://thestreamchurch.org/#servicios'],
-  ['Ministerios', 'https://thestreamchurch.org/obras-y-misiones'],
-  ['Eventos', 'https://thestreamchurch.org/#eventos'],
-  ['Recursos', 'https://thestreamchurch.org/confecion-de-fe-de-los-bautistas'],
-  ['Visítanos', 'https://thestreamchurch.org/que-esperar'],
-] as const;
+const isHome = Astro.url.pathname === '/';
 ---
 <header class="site-header">
   <div class="shell header-inner">
-    <a class="brand" href="/">
+    <a class="brand" href="/" aria-label="The Stream Church Updates: inicio">
       <img src="/images/logo.webp" width="44" height="44" alt="" fetchpriority="high" />
-      <span><small>Mission Baptist Church</small><strong>The Stream</strong></span>
+      <span class="brand-name"><small>The Stream Church</small><strong>Updates</strong></span>
     </a>
     <button id="nav-toggle" class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menú">
       <span></span><span></span><span></span>
     </button>
-    <nav id="site-nav" class="site-nav" aria-label="Navegación principal">
-      {navItems.map(([label, href]) => <a href={href}>{label}</a>)}
+    <nav id="site-nav" class="site-nav" aria-label="Navegación de Updates">
+      <div class="nav-local">
+        <a href="/" aria-current={isHome ? 'page' : undefined}>Inicio</a>
+        <a href="/#actualizaciones">Actualizaciones</a>
+      </div>
+      <a class="nav-church" href="https://thestreamchurch.org/">
+        Sitio de la iglesia
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+          <path d="M7 17 17 7M7 7h10v10" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
     </nav>
   </div>
 </header>

@@ -39,7 +39,7 @@ const jsonLd = buildHomeJsonLd(updates.map((u) => ({ title: u.data.title, url: c
     </section>
   ) : null}
 
-  <section class="shell recent-section" aria-labelledby="recent-title">
+  <section id="actualizaciones" class="shell recent-section" aria-labelledby="recent-title">
     <div class="section-heading"><span>Actualizaciones</span><h2 id="recent-title">Noticias y eventos recientes</h2></div>
     {recent.length > 0 ? (
       <div class="updates-grid">{recent.map((update) => <UpdateCard update={update} now={now} />)}</div>
