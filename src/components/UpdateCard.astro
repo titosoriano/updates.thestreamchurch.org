@@ -27,13 +27,13 @@ const formattedDate = formatContentDate(displayDate);
 const upcoming = data.eventDate ? data.eventDate.getTime() >= now.getTime() : false;
 ---
 <article class="update-card">
-  <a class="update-card-media" href={href} tabindex="-1" aria-hidden="true">
+  <a class:list={["update-card-media", { "is-fiesta-flyer": data.image === "/images/fiesta-de-las-naciones-2026/fiesta1.webp" }]} href={href} tabindex="-1" aria-hidden="true">
     <img
       src={data.image}
       srcset={responsiveSrcset(data.image, 1600)}
       alt=""
       width="1600"
-      height="919"
+      height={data.image === "/images/fiesta-de-las-naciones-2026/fiesta1.webp" ? 2143 : 919}
       sizes="(min-width: 1200px) 33vw, (min-width: 900px) 50vw, 100vw"
       loading={priority ? 'eager' : 'lazy'}
       fetchpriority={priority ? 'high' : undefined}

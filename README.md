@@ -119,7 +119,7 @@ Run the full local checks, then commit and push directly to `main`. Every push t
 
 ## First custom update
 
-`/fiesta-de-las-naciones-2026` is the first custom landing page. Its approved current event facts are Sunday, October 4, 2026 at 1:00 PM, at 11 Technology Drive North, Warren, NJ 07059, with Chanel Novas as special guest. The page communicates free admission and free food.
+`/fiesta-de-las-naciones-2026` is the first custom landing page. Its approved current event facts are Sunday, October 4, 2026 at 1:00 PM, at 11 Technology Drive North, Warren, NJ 07059, with Bolañito (de Los Hijos del Rey) as special guest. The page communicates free admission and free food.
 
 ## Deployment
 

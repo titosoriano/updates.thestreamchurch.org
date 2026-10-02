@@ -21,7 +21,7 @@ describe('Fiesta de las Naciones 2026 contract', () => {
     expect(source).toContain('eventDate: 2026-10-04');
     expect(source).toContain('eventTime: \"1:00 PM\"');
     expect(source).toContain('11 Technology Drive North, Warren, NJ 07059');
-    expect(source).toContain('guestName: \"Chanel Novas\"');
+    expect(source).toContain('guestName: \"Bolañito (de Los Hijos del Rey)\"');
     expect(source).toMatch(/Comida/);
     expect(source).toMatch(/Música/);
     expect(source).toMatch(/Cultura/);

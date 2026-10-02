@@ -317,10 +317,12 @@ Event: Fiesta de las Naciones 2026
 Date: Sunday, October 4, 2026
 Time: 1:00 PM
 Location: 11 Technology Drive North, Warren, NJ 07059
-Special guest: Chanel Novas
+Special guest: Bolañito (de Los Hijos del Rey)
 Admission: Free
 Food: Free
 ```
+
+Guest update (2026-10-02): Chanel Novas will not attend due to logistics. Bolañito, de Los Hijos del Rey, is the confirmed guest. The featured flyer is `fiesta1.webp` (from `fiesta1.png`); `bolanito.webp` (from `bolanito.png`) appears in the guest section. Show both flyers without cropping.
 
 Critical stale-data warning:
 
