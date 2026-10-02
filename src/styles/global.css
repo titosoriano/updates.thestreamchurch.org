@@ -1217,7 +1217,7 @@ a, button { touch-action: manipulation; }
 .mujeres-final-cta {
   width: calc(100% - var(--gutter-left) - var(--gutter-right));
   max-width: var(--shell-max);
-  margin: 0 auto clamp(2rem, 5vw, 4rem);
+  margin: clamp(2rem, 5vw, 4rem) auto;
   border-radius: clamp(1rem, 2vw, 1.5rem);
   overflow: hidden;
 }
