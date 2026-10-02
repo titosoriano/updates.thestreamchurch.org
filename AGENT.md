@@ -322,7 +322,7 @@ Admission: Free
 Food: Free
 ```
 
-Guest update (2026-10-02): Chanel Novas will not attend due to logistics. Bolañito, de Los Hijos del Rey, is the confirmed guest. The featured flyer is `fiesta1.webp` (from `fiesta1.png`); `bolanito.webp` (from `bolanito.png`) appears in the guest section. Show both flyers without cropping.
+Guest update (2026-10-02): Chanel Novas will not attend due to logistics. Bolañito, de Los Hijos del Rey, is the confirmed guest. The featured flyer is `fiesta1.webp` (from `fiesta1.png`); `bolanito.webp` (from `bolanito.png`) appears in the guest section. Show both flyers without cropping. The event hero uses optimized `bg1.webp` and `bg1-mobile.webp` crops from `bg1.jpg`; the logistics notice appears in an accessible, labeled alert-style panel.
 
 Critical stale-data warning:
 
