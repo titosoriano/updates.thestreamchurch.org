@@ -658,6 +658,8 @@ a, button { touch-action: manipulation; }
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   background: white;
   border: 1px solid var(--border-soft);
+  border-radius: clamp(1rem, 2vw, 1.5rem);
+  overflow: hidden;
   box-shadow: var(--shadow-card);
   transition: box-shadow var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
 }
@@ -1210,6 +1212,15 @@ a, button { touch-action: manipulation; }
 }
 
 /* --- Final CTA --------------------------------------------------------- */
+
+.fiesta-final-cta,
+.mujeres-final-cta {
+  width: calc(100% - var(--gutter-left) - var(--gutter-right));
+  max-width: var(--shell-max);
+  margin: 0 auto clamp(2rem, 5vw, 4rem);
+  border-radius: clamp(1rem, 2vw, 1.5rem);
+  overflow: hidden;
+}
 
 .fiesta-final-cta {
   position: relative;
